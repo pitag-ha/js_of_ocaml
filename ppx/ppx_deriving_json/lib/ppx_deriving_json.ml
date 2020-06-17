@@ -18,13 +18,11 @@
  *)
 
 open StdLabels
-open Migrate_parsetree
-open OCaml_408.Ast
-open Ast_helper
-open Asttypes
-open Parsetree
+open Ppxlib_ast
+open Ppxlib.Ast_helper
+open Ppxlib.Parsetree
 
-let nolabel = Nolabel
+let nolabel = Ast.Nolabel
 
 let unflatten l =
   match l with
@@ -123,11 +121,8 @@ let fresh_var bound =
   in
   loop 0
 
-module To_current = Migrate_parsetree.Convert (OCaml_408) (OCaml_current)
-
 let string_of_core_type typ : string =
   let typ = { typ with ptyp_attributes = [] } in
-  let typ = To_current.copy_core_type typ in
   Format.asprintf "%a" Pprintast.core_type typ
 
 let core_type_of_type_decl { ptype_name = name; ptype_params; _ } =
